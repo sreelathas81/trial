@@ -1,0 +1,50 @@
+'''
+Created on 11-May-2018
+
+@author: DELL
+'''
+import sqlite3
+
+con=sqlite3.connect('mobile.sqlite')
+cur=con.cursor()
+
+def insert(mobilename,mobileid,cost,model):
+    con=sqlite3.connect("Mobile.db")
+    cur=con.cursor()
+    cur.execute("create table if not exists mobile(mobilename text,mobileid text,cost integer ,model text)")
+    try:
+        cur.execute("insert into mobile(mobilename, mobileid, cost, model) values(?,?,?,?)",(mobilename,mobileid,cost,model))
+        con.commit()
+        return 1
+    except:
+        return 0
+    
+def delete(mobilename ):
+    con=sqlite3.connect("Mobile.db")
+    cur=con.cursor()
+    cur.execute("delete from mobile where mobilename=?",(mobilename,))
+    con.commit()
+    cur.close() 
+    
+    
+def search(mobilename="",mobileid="",cost="",model=""):
+    con=sqlite3.connect("mobile.db")  
+    cur=con.cursor()
+    cur.execute("select * from mobile where mobilename=? or mobileid=? or cost=? or model=?",(mobilename,mobileid,cost,model))
+    con.commit()
+    row = cur.fetchall()
+    cur.close()
+    return row
+    
+    
+def view():
+    con=sqlite3.connect("mobile.db")  
+    cur=con.cursor()
+    cur.execute("select * from mobile ")
+    rows=cur.fetchall()
+   # con.close()
+    return rows
+    con.commit()
+    cur.close()
+            
+            
